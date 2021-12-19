@@ -280,6 +280,7 @@
                           (define-swift-block "else"
                               (wl (format nil "try moveToState(.~a)" (sym->camelcase decision)))))))
             (wl "break"))))
+    (wl)
     (define-swift-pfun "log" "_ msg: String"
       (define-swift-block "if isLogEnabled"
         (wl "print(\"StateMachine: \\(msg)\")")))))
