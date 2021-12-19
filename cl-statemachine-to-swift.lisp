@@ -145,7 +145,7 @@
     (define-swift-doc "Last action.")
     (wlb "private(set) var lastAction: Action!")
     (define-swift-doc "Last action error.")
-    (wlb "private(set) var error: Error?")
+    (wlb "private(set) var lastActionError: Error?")
     (define-swift-doc "Actions")
     (dolist (action (slot-value *machine* 'actions))
       (wl "private var action~a: ActionExecutor!" (sym->pascalcase action)))
@@ -165,7 +165,7 @@
     (wlb "}")
     (define-swift-doc "Description of the error from last action.")
     (define-swift-block "func errorDescription() -> String?"
-      (define-swift-block "if let error = error"
+      (define-swift-block "if let error = lastActionError"
           (define-swift-block "if let err = error as? Err"
               (define-swift-cont "return \"\\(err)\""
                 (wl ".replacingOccurrences(of: \"(\", with: \":\")")
@@ -201,7 +201,7 @@
             (define-swift-block (format nil "action~a" ap)
                 (wl "[weak self] success, error in")
               (define-swift-block "if error != nil"
-                (wl "self?.error = error")
+                (wl "self?.lastActionError = error")
                 (wl "completion(false, error)")
                 (wl "return"))
               (define-swift-block "do"
