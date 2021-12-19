@@ -2,6 +2,7 @@
 
 ;;; TODO: beautify code (ex: join "else", "catch" lines)
 ;;; TODO: remove trailing white spaces
+;;; TODO: cleanup common lisp code
 
 (in-package #:cl-statemachine-to-swift)
 
