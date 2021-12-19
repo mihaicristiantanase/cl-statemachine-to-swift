@@ -205,11 +205,14 @@
                 (wl "completion(false, error)")
                 (wl "return"))
               (define-swift-block "do"
-                  (wl "try self?.moveToState(transition.2)")
+                (wl "try self?.moveToState(transition.2)")
+                (wl "self?.lastActionError = error")
                 (wl "completion(success, error)"))
               (define-swift-block "catch"
+                  (wl "self?.lastActionError = error")
                   (wl "completion(false, error)"))))
           (define-swift-block "catch"
+              (wl "lastActionError = error")
               (wl "completion(false, error)")))))
     (wl)
     (define-swift-doc "Start method. Must be called, otherwise, the state machine is not running.")
