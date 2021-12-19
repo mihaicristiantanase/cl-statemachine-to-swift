@@ -228,6 +228,8 @@
         (define-swift-block (format nil "if action~a == nil" (sym->pascalcase action))
             (wl (format nil "fatalError(\"Machine not started because action '~a' is missing\")"
                         (sym->camelcase action)))))
+      (wl)
+      (wl "// start the machine")
       (define-swift-block "do"
         (wl "try moveToState(state)"))
       (define-swift-block "catch"
