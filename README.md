@@ -449,3 +449,13 @@ sm.setActionGoToG { [weak self] in self?.goToGDemoEx($0) }
 sm.setActionKeepState { [weak self] in self?.keepStateDemoEx($0) }
 sm.start()
 ```
+
+## TODO
+
+1. Generate the Machine object automatically by parsing the BMPN diagram;
+
+1. Beautify code (ex: join "else", "catch" lines);
+
+1. Remove trailing white spaces;
+
+1. Cleanup Common Lisp code;
