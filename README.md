@@ -43,7 +43,6 @@ From the  following BMPN diagram:
 (cl-statemachine-to-swift:save-and-check-swift machine
   "/tmp/StateMachine.swift"
   "/tmp/StateMachineUsage.swift")
-
 ```
 
 * generates the main `StateMachine.swift`:
