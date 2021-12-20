@@ -13,7 +13,7 @@ This is a project to generate a StateMachine swift class from a state machine de
 From the  following BMPN diagram:
 ![img](demo_ex.png)
 
-the following code
+*manually* writing the the following code
 
 ```lisp
 (ql:quickload "cl-statemachine-to-swift")
