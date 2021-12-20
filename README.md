@@ -45,7 +45,7 @@ From the  following BMPN diagram:
   "/tmp/StateMachineUsage.swift")
 ```
 
-* generates the main `StateMachine.swift`:
+* generates the main state machine file at `/tmp/StateMachine.swift`:
 
 ```swift
 //
@@ -433,7 +433,7 @@ class StateMachine {
 }
 ```
 
-* and the usage `StateMachineUsage.swift`:
+* and the usage file at `/tmp/StateMachineUsage.swift`:
 
 ```swift
 sm = StateMachine.create()
