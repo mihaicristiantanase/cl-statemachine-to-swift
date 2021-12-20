@@ -11,7 +11,7 @@ This is a project to generate a StateMachine swift class from a state machine de
 ## Usage
 
 From the  following BMPN diagram:
-[img](demo_ex.png)
+![img](demo_ex.png)
 
 the following code
 
