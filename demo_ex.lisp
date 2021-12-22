@@ -16,9 +16,13 @@
              e
              f
              g)
-   :actions '(go-to-b go-to-a go-to-f go-to-g keep-state)
+   :actions '(go-to-b go-to-a go-to-f go-to-g execute-something)
    :transitions '((d go-to-g g)
                   (g go-to-a a)
-                  (g keep-state nil)
+                  (g execute-something nil)
                   (a go-to-b b)
                   (e go-to-f f))))
+
+(cl-statemachine-to-swift:save-and-check-swift machine
+  "/tmp/StateMachine.swift"
+  "/tmp/StateMachineUsage.swift")

@@ -31,12 +31,13 @@ From the  following BMPN diagram:
              b
              (c-decision . ((flag-c1 . e) (flag-c2 . f) g))
              d
+             e
              f
              g)
-   :actions '(go-to-b go-to-a go-to-f go-to-g keep-state)
+   :actions '(go-to-b go-to-a go-to-f go-to-g execute-something)
    :transitions '((d go-to-g g)
                   (g go-to-a a)
-                  (g keep-state nil)
+                  (g execute-something nil)
                   (a go-to-b b)
                   (e go-to-f f))))
 
@@ -91,7 +92,7 @@ class StateMachine {
     case goToA
     case goToF
     case goToG
-    case keepState
+    case executeSomething
   }
   
   /**
@@ -121,7 +122,7 @@ class StateMachine {
   private var actionGoToA: ActionExecutor!
   private var actionGoToF: ActionExecutor!
   private var actionGoToG: ActionExecutor!
-  private var actionKeepState: ActionExecutor!
+  private var actionExecuteSomething: ActionExecutor!
   
   /**
    * Decisions
@@ -138,7 +139,7 @@ class StateMachine {
   private var transitions: [Transition] = [
     (.d, .goToG, .g),
     (.g, .goToA, .a),
-    (.g, .keepState, .g),
+    (.g, .executeSomething, .g),
     (.a, .goToB, .b),
     (.e, .goToF, .f),
   ]
@@ -260,18 +261,18 @@ class StateMachine {
   }
   
   /**
-   * Set action .keepState
+   * Set action .executeSomething
    */
-  func setActionKeepState(_ action: @escaping ActionExecutor) {
-    actionKeepState = action
+  func setActionExecuteSomething(_ action: @escaping ActionExecutor) {
+    actionExecuteSomething = action
   }
   
   /**
-   * Execute action .keepState from current state
+   * Execute action .executeSomething from current state
    */
-  func doActionKeepState(_ completion: @escaping Completion) {
-    log("doActionKeepState")
-    doAction(.keepState, completion)
+  func doActionExecuteSomething(_ completion: @escaping Completion) {
+    log("doActionExecuteSomething")
+    doAction(.executeSomething, completion)
   }
   
   /**
@@ -308,8 +309,8 @@ class StateMachine {
     if actionGoToG == nil {
       fatalError("Machine not started because action 'goToG' is missing")
     }
-    if actionKeepState == nil {
-      fatalError("Machine not started because action 'keepState' is missing")
+    if actionExecuteSomething == nil {
+      fatalError("Machine not started because action 'executeSomething' is missing")
     }
     
     // start the machine
@@ -338,8 +339,8 @@ class StateMachine {
       actionExec = actionGoToF
       case .goToG:
       actionExec = actionGoToG
-      case .keepState:
-      actionExec = actionKeepState
+      case .executeSomething:
+      actionExec = actionExecuteSomething
     }
     
     do {
@@ -446,7 +447,7 @@ sm.setActionGoToB { [weak self] in self?.goToBDemoEx($0) }
 sm.setActionGoToA { [weak self] in self?.goToADemoEx($0) }
 sm.setActionGoToF { [weak self] in self?.goToFDemoEx($0) }
 sm.setActionGoToG { [weak self] in self?.goToGDemoEx($0) }
-sm.setActionKeepState { [weak self] in self?.keepStateDemoEx($0) }
+sm.setActionExecuteSomething { [weak self] in self?.executeSomethingDemoEx($0) }
 sm.start()
 ```
 
