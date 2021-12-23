@@ -38,6 +38,11 @@
 (defgeneric get-states (machine))
 (defgeneric get-unstable-state-decisions (state machine))
 
+(defmethod initialize-instance :after ((machine Machine) &key)
+  (dolist (transition (slot-value machine 'transitions))
+    (unless (caddr transition)
+      (setf (caddr transition) (car transition)))))
+
 (defmethod get-start ((machine Machine))
   (car (get-states machine)))
 
@@ -305,14 +310,8 @@
   (with-output-to-string (*stream*)
     (gen-usage-stream)))
 
-(defun cleanup-machine (machine)
-  (dolist (transition (slot-value machine 'transitions))
-    (unless (caddr transition)
-      (setf (caddr transition) (car transition))))
-  machine)
-
 (defun save-and-check-swift (machine path-code path-usage)
-  (let* ((*machine* (cleanup-machine machine))
+  (let* ((*machine* machine)
          (code (gen-code))
          (code-usage (gen-usage)))
     (with-open-file (f path-code :direction :output :if-exists :supersede)
