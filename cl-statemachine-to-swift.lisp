@@ -318,4 +318,7 @@
       (write-string code f))
     (format t "~&~a" (shell:run t "swift" path-code))
     (with-open-file (f path-usage :direction :output :if-exists :supersede)
-      (write-string code-usage f))))
+      (write-string code-usage f))
+    (format t "~&Done. Please check ~a for the generated Swift file~% ~
+                 and ~a for a sample code of how to use."
+            path-code path-usage)))
