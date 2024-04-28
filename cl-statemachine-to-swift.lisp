@@ -298,16 +298,18 @@
           (wl "print(\"StateMachine: \\(msg)\")")))))
 
 (defun gen-usage-stream ()
-  (wl "sm = StateMachine.create()")
-  (loop-decisions (decision)
-                  (wl (format nil "sm.setDecision~a { [weak self] in /*TODO*/ true }"
-                              (sym->pascalcase decision))))
-  (dolist (action (slot-value *machine* 'actions))
-    (wl (format nil "sm.setAction~a { [weak self] in self?.~a~a($0) }"
-                (sym->pascalcase action)
-                (sym->camelcase action)
-                (sym->pascalcase (slot-value *machine* 'context)))))
-  (wl "sm.start()"))
+  (define-swift-class "StateMachineTest"
+      (define-swift-fun "test" ""
+        (wl "let sm = StateMachine.create()")
+        (loop-decisions (decision)
+                        (wl (format nil "sm.setDecision~a { [weak self] in /*TODO*/ true }"
+                                    (sym->pascalcase decision))))
+        (dolist (action (slot-value *machine* 'actions))
+          (wl (format nil "sm.setAction~a { [weak self] in self?.~a~a($0) }"
+                      (sym->pascalcase action)
+                      (sym->camelcase action)
+                      (sym->pascalcase (slot-value *machine* 'context)))))
+        (wl "sm.start()"))))
 
 (defun gen-code ()
   (with-output-to-string (*stream*)
