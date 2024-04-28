@@ -14,12 +14,10 @@
    (states
     :initarg :states
     :initform nil)
-   ;; TODO(mihai): actions is redundant and can be deduced from transitions
-   (actions
-    :initarg :actions
-    :initform nil)
    (transitions
     :initarg :transitions
+    :initform nil)
+   (actions
     :initform nil)))
 
 (defparameter *machine* nil)
@@ -44,7 +42,11 @@
 (defmethod initialize-instance :after ((machine Machine) &key)
   (dolist (transition (slot-value machine 'transitions))
     (unless (caddr transition)
-      (setf (caddr transition) (car transition)))))
+      (setf (caddr transition) (car transition))))
+  ;; auto-fill actions
+  (setf (slot-value machine 'actions)
+        (unique-list
+         (mapcar #'second (slot-value machine 'transitions)))))
 
 (defmethod get-start ((machine Machine))
   (car (get-states machine)))
