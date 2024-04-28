@@ -5,7 +5,6 @@
 ;;; TODO: cleanup common lisp code
 ;;; TODO(mihai): fill in skeleton functions for actions in usage output files
 ;; TODO(mihai): fill in flags
-;; TODO(mihai): Q: can I use list instead of cons when defining the machine? For example: "(downloaded-decision . ("
 
 (in-package #:cl-statemachine-to-swift)
 
