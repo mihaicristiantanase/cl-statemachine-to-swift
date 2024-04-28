@@ -52,7 +52,7 @@
 (defmethod get-states ((machine Machine))
   (mapcar #'(lambda (s) (if (symbolp s) s (car s)))
           (slot-value machine 'states)))
-  
+
 (defmethod get-unstable-state-decisions (state (machine Machine))
   (dolist (s (slot-value machine 'states))
     (when (and (listp s) (eq (car s) state))
@@ -174,13 +174,13 @@
     (wlb "}")
     (define-swift-doc "Description of the error from last action.")
     (define-swift-block "func errorDescription() -> String?"
-      (define-swift-block "if let error = lastActionError"
-          (define-swift-block "if let err = error as? Err"
-              (define-swift-cont "return \"\\(err)\""
-                (wl ".replacingOccurrences(of: \"(\", with: \":\")")
-                (wl ".replacingOccurrences(of: \")\", with: \"\")")
-                (wl ".replacingOccurrences(of: \"\\\"\", with: \" \")")
-                (wl ".trimmingCharacters(in: .whitespacesAndNewlines)")))
+        (define-swift-block "if let error = lastActionError"
+            (define-swift-block "if let err = error as? Err"
+                (define-swift-cont "return \"\\(err)\""
+                    (wl ".replacingOccurrences(of: \"(\", with: \":\")")
+                  (wl ".replacingOccurrences(of: \")\", with: \"\")")
+                  (wl ".replacingOccurrences(of: \"\\\"\", with: \" \")")
+                  (wl ".trimmingCharacters(in: .whitespacesAndNewlines)")))
           (wl "return error.localizedDescription"))
       (wl "return nil"))
     (loop-decisions (decision)
@@ -204,7 +204,7 @@
     (wl)
     (define-swift-doc "Start method. Must be called, otherwise, the state machine is not running.")
     (define-swift-fun "start" ""
-        (wl "// check decisions")
+      (wl "// check decisions")
       (loop-decisions (decision)
                       (define-swift-block (format nil "if ~a == nil" (sym->decision decision))
                           (wl (format nil "fatalError(\"Machine not started because decision '~a' is missing\")"
@@ -218,9 +218,9 @@
       (wl)
       (wl "// start the machine")
       (define-swift-block "do"
-        (wl "try moveToState(state)"))
+          (wl "try moveToState(state)"))
       (define-swift-block "catch"
-        (wl "fatalError(\"\\(error)\")")))
+          (wl "fatalError(\"\\(error)\")")))
     (wl)
     (wl "private init(_ state: State) {")
     (wl "  self.state = state")
@@ -273,7 +273,7 @@
     (wl "  throw Err.impossibleAction(state, action)")
     (wlb "}")
     (define-swift-block "private func moveToState(_ state: State) throws"
-      (wl "self.state = state")
+        (wl "self.state = state")
       (wlb "log(\"moveToState \\(state)\")")
       (define-swift-block "switch state"
           (dolist (state (get-states *machine*))
@@ -291,7 +291,7 @@
     (wl)
     (define-swift-pfun "log" "_ msg: String"
       (define-swift-block "if isLogEnabled"
-        (wl "print(\"StateMachine: \\(msg)\")")))))
+          (wl "print(\"StateMachine: \\(msg)\")")))))
 
 (defun gen-usage-stream ()
   (wl "sm = StateMachine.create()")
