@@ -300,7 +300,7 @@
 (defun gen-usage-stream ()
   (wl "sm = StateMachine.create()")
   (loop-decisions (decision)
-                  (wl (format nil "sm.setDecision~a = { [weak self] in /*TODO*/ }"
+                  (wl (format nil "sm.setDecision~a { [weak self] in /*TODO*/ true }"
                               (sym->pascalcase decision))))
   (dolist (action (slot-value *machine* 'actions))
     (wl (format nil "sm.setAction~a { [weak self] in self?.~a~a($0) }"
