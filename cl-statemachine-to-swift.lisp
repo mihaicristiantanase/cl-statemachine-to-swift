@@ -45,8 +45,10 @@
       (setf (caddr transition) (car transition))))
   ;; auto-fill actions
   (setf (slot-value machine 'actions)
-        (unique-list
-         (mapcar #'second (slot-value machine 'transitions)))))
+        (sort (unique-list
+               (mapcar #'second (slot-value machine 'transitions)))
+              #'string<
+              :key #'symbol-name)))
 
 (defmethod get-start ((machine Machine))
   (car (get-states machine)))
