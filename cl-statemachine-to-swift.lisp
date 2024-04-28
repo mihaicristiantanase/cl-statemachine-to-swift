@@ -142,7 +142,7 @@
   (wl "import Foundation")
   (wl)
   (define-swift-class "StateMachine"
-      (wl "typealias Completion = (Bool, Error?) -> Void")
+    (wl "typealias Completion = (Bool, Error?) -> Void")
     (wl "typealias ActionExecutor = (@escaping Completion) -> Void")
     (wl "typealias Transition = (State, Action, State)")
     (wlb "typealias Decision = () -> Bool?")
@@ -211,14 +211,14 @@
       (wl "// check decisions")
       (loop-decisions (decision)
                       (define-swift-block (format nil "if ~a == nil" (sym->decision decision))
-                          (wl (format nil "fatalError(\"Machine not started because decision '~a' is missing\")"
-                                      (sym->camelcase decision)))))
+                        (wl (format nil "fatalError(\"Machine not started because decision '~a' is missing\")"
+                                    (sym->camelcase decision)))))
       (wl)
       (wl "// check actions")
       (dolist (action (slot-value *machine* 'actions))
         (define-swift-block (format nil "if action~a == nil" (sym->pascalcase action))
-            (wl (format nil "fatalError(\"Machine not started because action '~a' is missing\")"
-                        (sym->camelcase action)))))
+          (wl (format nil "fatalError(\"Machine not started because action '~a' is missing\")"
+                      (sym->camelcase action)))))
       (wl)
       (wl "// start the machine")
       (define-swift-block "do"
@@ -277,7 +277,7 @@
     (wl "  throw Err.impossibleAction(state, action)")
     (wlb "}")
     (define-swift-block "private func moveToState(_ state: State) throws"
-        (wl "self.state = state")
+      (wl "self.state = state")
       (wlb "log(\"moveToState \\(state)\")")
       (define-swift-block "switch state"
           (dolist (state (get-states *machine*))
@@ -288,9 +288,9 @@
                       (if (listp decision)
                           (let ((sd (sym->decision (car decision))))
                             (define-swift-block (format nil "~:[~;else ~]if ~a() ?? false" (> i 0) sd)
-                                (wl (format nil "try moveToState(.~a)" (sym->camelcase (cdr decision))))))
+                              (wl (format nil "try moveToState(.~a)" (sym->camelcase (cdr decision))))))
                           (define-swift-block "else"
-                              (wl (format nil "try moveToState(.~a)" (sym->camelcase decision)))))))
+                            (wl (format nil "try moveToState(.~a)" (sym->camelcase decision)))))))
             (wl "break"))))
     (wl)
     (define-swift-pfun "log" "_ msg: String"
