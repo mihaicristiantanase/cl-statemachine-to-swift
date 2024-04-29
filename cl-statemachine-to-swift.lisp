@@ -325,7 +325,7 @@
          (code-usage (gen-usage)))
     (with-open-file (f path-code :direction :output :if-exists :supersede)
       (write-string code f))
-    (format t "~&~a" (shell:run t "swift" path-code))
+    (format t "~&~a~%" (shell:run t "swiftc" path-code path-usage))
     (with-open-file (f path-usage :direction :output :if-exists :supersede)
       (write-string code-usage f))
     (format t "~&Done. Please check ~a for the generated Swift file~% ~
