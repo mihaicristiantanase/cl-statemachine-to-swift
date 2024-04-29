@@ -3,8 +3,6 @@
 ;;; TODO: beautify code (ex: join "else", "catch" lines)
 ;;; TODO: remove trailing white spaces
 ;;; TODO: cleanup common lisp code
-;;; TODO(mihai): fill in skeleton functions for actions in usage output files
-;; TODO(mihai): fill in flags
 
 (in-package #:cl-statemachine-to-swift)
 
