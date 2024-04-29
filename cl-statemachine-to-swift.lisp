@@ -115,6 +115,9 @@
 (defmacro define-swift-pfun (name params &rest body)
   `(define-swift-block (format nil "private func ~a(~a)" ,name ,params) ,@body))
 
+(defmacro define-swift-sfun (name params &rest body)
+  `(define-swift-block (format nil "static func ~a(~a)" ,name ,params) ,@body))
+
 (defmacro define-swift-fun (name params &rest body)
   `(define-swift-block (format nil "func ~a(~a)" ,name ,params) ,@body))
 
@@ -298,18 +301,29 @@
           (wl "print(\"StateMachine: \\(msg)\")")))))
 
 (defun gen-usage-stream ()
+  (wl "@main")
   (define-swift-class "StateMachineTest"
       (define-swift-fun "test" ""
         (wl "let sm = StateMachine.create()")
         (loop-decisions (decision)
-                        (wl (format nil "sm.setDecision~a { [weak self] in /*TODO*/ true }"
+                        (wl (format nil "sm.setDecision~a { [weak self] in /*TODO*/ self?.tautology() }"
                                     (sym->pascalcase decision))))
         (dolist (action (slot-value *machine* 'actions))
           (wl (format nil "sm.setAction~a { [weak self] in self?.~a~a($0) }"
                       (sym->pascalcase action)
                       (sym->camelcase action)
                       (sym->pascalcase (slot-value *machine* 'context)))))
-        (wl "sm.start()"))))
+        (wl "sm.start()"))
+    (dolist (action (slot-value *machine* 'actions))
+      (let ((func-name (format nil "~a~a"
+                                (sym->camelcase action)
+                                (sym->pascalcase (slot-value *machine* 'context)))))
+        (define-swift-pfun func-name "_ completion: @escaping StateMachine.Completion"
+          (wl (format nil "// TODO: add logic for ~a" func-name)))))
+    (define-swift-block "private func tautology() -> Bool"
+      (wl "return true"))
+    (define-swift-sfun "main" ""
+      (wl "StateMachineTest().test()"))))
 
 (defun gen-code ()
   (with-output-to-string (*stream*)
