@@ -8,4 +8,5 @@
   :serial t
   :depends-on (:shell :cl-change-case)
   :components ((:file "package")
+               (:file "utils")
                (:file "cl-statemachine-to-swift")))

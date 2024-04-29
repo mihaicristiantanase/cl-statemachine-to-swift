@@ -5,4 +5,4 @@
   (let ((seen (make-hash-table :test 'equal)))
     (loop for var in lst
           do (unless (gethash var seen) (setf (gethash var seen) t)))
-    (loop for key being the hash-keys of seen collect key)))))
+    (loop for key being the hash-keys of seen collect key)))
