@@ -320,14 +320,16 @@
     (gen-usage-stream)))
 
 (defun save-and-check-swift (machine path-code path-usage)
+  (format t "~&Generating code…~%")
   (let* ((*machine* machine)
          (code (gen-code))
          (code-usage (gen-usage)))
     (with-open-file (f path-code :direction :output :if-exists :supersede)
       (write-string code f))
-    (format t "~&~a~%" (shell:run t "swiftc" path-code path-usage))
     (with-open-file (f path-usage :direction :output :if-exists :supersede)
       (write-string code-usage f))
+    (format t "~&Verifying output by compiling…~%")
+    (format t "~&~a~%" (shell:run t "swiftc" path-code path-usage))
     (format t "~&Done. Please check ~a for the generated Swift file~% ~
                  and ~a for a sample code of how to use."
             path-code path-usage)))
