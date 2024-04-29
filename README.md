@@ -29,7 +29,10 @@ From the  following BMPN diagram:
               d)
              a
              b
-             (c-decision . ((flag-c1 . e) (flag-c2 . f) g))
+             (c-decision
+              (flag-c1 . e)
+              (flag-c2 . f)
+              g)
              d
              e
              f
