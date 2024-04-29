@@ -34,7 +34,6 @@ From the  following BMPN diagram:
              e
              f
              g)
-   :actions '(go-to-b go-to-a go-to-f go-to-g execute-something)
    :transitions '((d go-to-g g)
                   (g go-to-a a)
                   (g execute-something nil)
@@ -88,11 +87,11 @@ class StateMachine {
    * The actions of the state machine. An action connects two states.
    */
   enum Action {
-    case goToB
+    case executeSomething
     case goToA
+    case goToB
     case goToF
     case goToG
-    case executeSomething
   }
   
   /**
@@ -118,11 +117,11 @@ class StateMachine {
   /**
    * Actions
    */
-  private var actionGoToB: ActionExecutor!
+  private var actionExecuteSomething: ActionExecutor!
   private var actionGoToA: ActionExecutor!
+  private var actionGoToB: ActionExecutor!
   private var actionGoToF: ActionExecutor!
   private var actionGoToG: ActionExecutor!
-  private var actionExecuteSomething: ActionExecutor!
   
   /**
    * Decisions
@@ -201,18 +200,18 @@ class StateMachine {
   }
   
   /**
-   * Set action .goToB
+   * Set action .executeSomething
    */
-  func setActionGoToB(_ action: @escaping ActionExecutor) {
-    actionGoToB = action
+  func setActionExecuteSomething(_ action: @escaping ActionExecutor) {
+    actionExecuteSomething = action
   }
   
   /**
-   * Execute action .goToB from current state
+   * Execute action .executeSomething from current state
    */
-  func doActionGoToB(_ completion: @escaping Completion) {
-    log("doActionGoToB")
-    doAction(.goToB, completion)
+  func doActionExecuteSomething(_ completion: @escaping Completion) {
+    log("doActionExecuteSomething")
+    doAction(.executeSomething, completion)
   }
   
   /**
@@ -228,6 +227,21 @@ class StateMachine {
   func doActionGoToA(_ completion: @escaping Completion) {
     log("doActionGoToA")
     doAction(.goToA, completion)
+  }
+  
+  /**
+   * Set action .goToB
+   */
+  func setActionGoToB(_ action: @escaping ActionExecutor) {
+    actionGoToB = action
+  }
+  
+  /**
+   * Execute action .goToB from current state
+   */
+  func doActionGoToB(_ completion: @escaping Completion) {
+    log("doActionGoToB")
+    doAction(.goToB, completion)
   }
   
   /**
@@ -261,21 +275,6 @@ class StateMachine {
   }
   
   /**
-   * Set action .executeSomething
-   */
-  func setActionExecuteSomething(_ action: @escaping ActionExecutor) {
-    actionExecuteSomething = action
-  }
-  
-  /**
-   * Execute action .executeSomething from current state
-   */
-  func doActionExecuteSomething(_ completion: @escaping Completion) {
-    log("doActionExecuteSomething")
-    doAction(.executeSomething, completion)
-  }
-  
-  /**
    * Start method. Must be called, otherwise, the state machine is not running.
    */
   func start() {
@@ -297,20 +296,20 @@ class StateMachine {
     }
     
     // check actions
-    if actionGoToB == nil {
-      fatalError("Machine not started because action 'goToB' is missing")
+    if actionExecuteSomething == nil {
+      fatalError("Machine not started because action 'executeSomething' is missing")
     }
     if actionGoToA == nil {
       fatalError("Machine not started because action 'goToA' is missing")
+    }
+    if actionGoToB == nil {
+      fatalError("Machine not started because action 'goToB' is missing")
     }
     if actionGoToF == nil {
       fatalError("Machine not started because action 'goToF' is missing")
     }
     if actionGoToG == nil {
       fatalError("Machine not started because action 'goToG' is missing")
-    }
-    if actionExecuteSomething == nil {
-      fatalError("Machine not started because action 'executeSomething' is missing")
     }
     
     // start the machine
@@ -331,16 +330,16 @@ class StateMachine {
     
     var actionExec: ActionExecutor!
     switch action {
-      case .goToB:
-      actionExec = actionGoToB
+      case .executeSomething:
+      actionExec = actionExecuteSomething
       case .goToA:
       actionExec = actionGoToA
+      case .goToB:
+      actionExec = actionGoToB
       case .goToF:
       actionExec = actionGoToF
       case .goToG:
       actionExec = actionGoToG
-      case .executeSomething:
-      actionExec = actionExecuteSomething
     }
     
     do {
@@ -437,18 +436,44 @@ class StateMachine {
 * and the usage file at `/tmp/StateMachineUsage.swift`:
 
 ```swift
-sm = StateMachine.create()
-sm.setDecisionFlagA = { [weak self] in /*TODO*/ }
-sm.setDecisionFlagB = { [weak self] in /*TODO*/ }
-sm.setDecisionFlagC = { [weak self] in /*TODO*/ }
-sm.setDecisionFlagC1 = { [weak self] in /*TODO*/ }
-sm.setDecisionFlagC2 = { [weak self] in /*TODO*/ }
-sm.setActionGoToB { [weak self] in self?.goToBDemoEx($0) }
-sm.setActionGoToA { [weak self] in self?.goToADemoEx($0) }
-sm.setActionGoToF { [weak self] in self?.goToFDemoEx($0) }
-sm.setActionGoToG { [weak self] in self?.goToGDemoEx($0) }
-sm.setActionExecuteSomething { [weak self] in self?.executeSomethingDemoEx($0) }
-sm.start()
+@main
+class StateMachineTest {
+  func test() {
+    let sm = StateMachine.create()
+    sm.setDecisionFlagA { [weak self] in /*TODO*/ self?.tautology() }
+    sm.setDecisionFlagB { [weak self] in /*TODO*/ self?.tautology() }
+    sm.setDecisionFlagC { [weak self] in /*TODO*/ self?.tautology() }
+    sm.setDecisionFlagC1 { [weak self] in /*TODO*/ self?.tautology() }
+    sm.setDecisionFlagC2 { [weak self] in /*TODO*/ self?.tautology() }
+    sm.setActionExecuteSomething { [weak self] in self?.executeSomethingDemoEx($0) }
+    sm.setActionGoToA { [weak self] in self?.goToADemoEx($0) }
+    sm.setActionGoToB { [weak self] in self?.goToBDemoEx($0) }
+    sm.setActionGoToF { [weak self] in self?.goToFDemoEx($0) }
+    sm.setActionGoToG { [weak self] in self?.goToGDemoEx($0) }
+    sm.start()
+  }
+  private func executeSomethingDemoEx(_ completion: @escaping StateMachine.Completion) {
+    // TODO: add logic for executeSomethingDemoEx
+  }
+  private func goToADemoEx(_ completion: @escaping StateMachine.Completion) {
+    // TODO: add logic for goToADemoEx
+  }
+  private func goToBDemoEx(_ completion: @escaping StateMachine.Completion) {
+    // TODO: add logic for goToBDemoEx
+  }
+  private func goToFDemoEx(_ completion: @escaping StateMachine.Completion) {
+    // TODO: add logic for goToFDemoEx
+  }
+  private func goToGDemoEx(_ completion: @escaping StateMachine.Completion) {
+    // TODO: add logic for goToGDemoEx
+  }
+  private func tautology() -> Bool {
+    return true
+  }
+  static func main() {
+    StateMachineTest().test()
+  }
+}
 ```
 
 ## TODO
