@@ -16,7 +16,6 @@
              e
              f
              g)
-   :actions '(go-to-b go-to-a go-to-f go-to-g execute-something)
    :transitions '((d go-to-g g)
                   (g go-to-a a)
                   (g execute-something nil)
